@@ -1,0 +1,18 @@
+# Dockerfile for the NGINX web application
+
+# Use a lightweight base image of NGINX
+FROM nginx:alpine
+
+#making html as a working directory
+WORKDIR /usr/share/nginx/html
+
+# Copy the web application files to the Nginx HTML directory
+COPY . .
+
+#Removing unwanted content that has been copied from machine e.g dockerfile that you have built
+RUN rm -rf dockerfile
+
+# Expose the default Nginx port
+EXPOSE 80
+
+# Nginx is set to run in the foreground by default, so no need for CMD
