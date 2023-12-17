@@ -14,7 +14,7 @@ COPY . .
 ADD https://coderepo.com/linktoyourpackage.html
 
 #remove any un-necessary files which got copied from copy command
-RUN rm -rf dockerfile
+RUN rm -rf Dockerfile
 
 #exposing port 80 to public for http traffic
 EXPOSE 80
