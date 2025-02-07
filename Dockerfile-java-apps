@@ -1,0 +1,22 @@
+ARG CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX
+FROM ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/eclipse-temurin:17-jre-alpine
+
+RUN adduser -D p4pvn -s /bin/ash  && \
+    chmod o-rx /home/p4pvn && \
+    mkdir /app && \
+    chown -R p4pvn:p4pvn /app
+
+RUN apk add gcompat jemalloc <more-dependencies>
+
+USER p4pvn
+
+WORKDIR /app
+
+ARG ACTIVE_PROFILE
+ENV SPRING_ACTIVE_PROFILE $ACTIVE_PROFILE
+
+ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
+
+COPY --chown=p4pvn:p4pvn target/*.jar /app/app.jar
+
+ENTRYPOINT ["java", "-Dspring.profiles.active=${SPRING_ACTIVE_PROFILE}", "-jar", "app.jar"]
